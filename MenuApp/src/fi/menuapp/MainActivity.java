@@ -32,8 +32,10 @@ public class MainActivity extends ActionBarActivity {
 			return true;
 		}
 		if(id == R.id.toCart) {
-			Intent intent = new Intent(this, CartActivity.class);
-			startActivity(intent);
+			//CartActivity puuttuu versionhallinnasta
+			
+			//Intent intent = new Intent(this, CartActivity.class);
+			//startActivity(intent);
 		}
 		return super.onOptionsItemSelected(item);
 	}
