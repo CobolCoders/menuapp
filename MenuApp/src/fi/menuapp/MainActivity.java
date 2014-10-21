@@ -1,17 +1,31 @@
 package fi.menuapp;
 
-import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import fi.menuapp.database.MenuDbHelper;
 
 public class MainActivity extends ActionBarActivity {
-
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        // db query test -> haut siirtyy domain-kerrokseen
+        MenuDbHelper menuDb = new MenuDbHelper(getBaseContext());
+        SQLiteDatabase db =  menuDb.getWritableDatabase();
+        
+        // select * from products
+        Cursor c = db.query("products", null, null, null, null, null, null);
+        
+        while (c.moveToNext()) {
+        	System.err.println(c.getPosition());
+        	System.err.println(c.getString(0) + ", " + c.getString(1));
+        }
     }
 
 

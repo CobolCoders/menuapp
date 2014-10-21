@@ -20,7 +20,7 @@ public class MenuContract {
 	
 	public static abstract class Order implements BaseColumns {
 		public static final String TABLE_NAME = "orders";
-		public static final String COLUMN_NAME_ID = "orderTimeStamp";
+		public static final String COLUMN_NAME_TIMESTAMP = "orderTimeStamp";
 	}
 	
 	public static abstract class ProductsOfOrder implements BaseColumns {
