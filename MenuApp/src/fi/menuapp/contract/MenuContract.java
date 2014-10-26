@@ -1,5 +1,6 @@
-package fi.menuapp.database.contract;
+package fi.menuapp.contract; 
 
+import android.net.Uri;
 import android.provider.BaseColumns;
 
 /**
@@ -8,7 +9,9 @@ import android.provider.BaseColumns;
  *
  */
 public class MenuContract {
-
+	public static final String AUTHORITY = "fi.menuapp.contract";
+	public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/menu");
+	
 	public MenuContract() {}
 	
 	public static abstract class Product implements BaseColumns {
