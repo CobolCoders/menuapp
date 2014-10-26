@@ -7,7 +7,6 @@
     <uses-sdk
         android:minSdkVersion="17"
         android:targetSdkVersion="18" />
-   
 
     <application
         android:allowBackup="true"
@@ -27,10 +26,11 @@
             android:name=".CartActivity"
             android:label="@string/title_activity_cart" >
         </activity>
-        
-        <provider android:name="fi.menuapp.contract.MenuProvider"
-            android:authorities="fi.menuapp.contract.MenuProvider">
-       	</provider>
+
+        <provider
+            android:name=".contract.MenuProvider"
+            android:authorities="fi.menuapp.contract.MenuProvider" >
+        </provider>
     </application>
 
 </manifest>
