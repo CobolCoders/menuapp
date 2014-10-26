@@ -2,6 +2,7 @@ package fi.menuapp;
 
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -81,10 +82,9 @@ public class MainActivity extends ActionBarActivity implements LoaderCallbacks<C
 			return true;
 		}
 		if(id == R.id.toCart) {
-			//CartActivity puuttuu versionhallinnasta
 			
-			//Intent intent = new Intent(this, CartActivity.class);
-			//startActivity(intent);
+			Intent intent = new Intent(this, CartActivity.class);
+			startActivity(intent);
 		}
 		return super.onOptionsItemSelected(item);
 	}
