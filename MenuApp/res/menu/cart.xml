@@ -9,9 +9,9 @@
         android:title="@string/action_settings"/>
     
     <item 
-        android:id="@+id/action_tocart"
+        android:id="@+id/action_tomenu"
         android:orderInCategory="100"
         android:showAsAction="ifRoom"
-        android:title="@string/action_tocart"/>
+        android:title="@string/action_tomenu"/>
 
 </menu>

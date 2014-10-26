@@ -1,12 +1,12 @@
 package fi.menuapp;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class CartActivity extends Activity {
+public class CartActivity extends ActionBarActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +32,7 @@ public class CartActivity extends Activity {
 			return true;
 		}
 		
-		if(id == R.id.toCart) {
+		if(id == R.id.action_tomenu) {
 			
 			Intent intent = new Intent(this, MainActivity.class);
 			startActivity(intent);
