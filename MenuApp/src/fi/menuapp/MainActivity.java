@@ -35,12 +35,14 @@ public class MainActivity extends ActionBarActivity implements LoaderCallbacks<C
     }
 
     private void createListViewMenu() {
-    	String[] fromColumns = {Product.COLUMN_NAME_PRODUCT_NAME};
-    	int[] toFields = {android.R.id.text1};
+    	String[] fromColumns = {Product.COLUMN_NAME_PRODUCT_NAME, 
+    			Product.COLUMN_NAME_PRODUCT_PRICE};
+    	int[] toFields = {R.id.productName, 
+    			R.id.productPrice};
     	
 		ListView menu = (ListView)findViewById(R.id.listViewMenu);
 		menu.setAdapter(productAdapter = new SimpleCursorAdapter(this, 
-				android.R.layout.simple_list_item_1, // tähän tehtävä oma list item layout 
+				R.layout.menu_list_item, 
 				null, 
 				fromColumns, 
 				toFields, 
