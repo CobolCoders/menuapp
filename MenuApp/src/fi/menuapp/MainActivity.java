@@ -1,6 +1,10 @@
 package fi.menuapp;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -9,7 +13,9 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 import android.widget.SimpleCursorAdapter;
 import fi.menuapp.contract.ProductContract;
 import fi.menuapp.contract.ProductContract.Product;
@@ -27,10 +33,14 @@ public class MainActivity extends ActionBarActivity implements LoaderCallbacks<C
 	
 	private SimpleCursorAdapter productAdapter;
 	
+	private ListView menu;
+	private List<NumberPicker> numberPickers;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        numberPickers = new ArrayList<NumberPicker>();
         createListViewMenu();
     }
 
@@ -40,13 +50,30 @@ public class MainActivity extends ActionBarActivity implements LoaderCallbacks<C
     	int[] toFields = {R.id.productName, 
     			R.id.productPrice};
     	
-		ListView menu = (ListView)findViewById(R.id.listViewMenu);
+    	menu = (ListView)findViewById(R.id.listViewMenu);
+		
 		menu.setAdapter(productAdapter = new SimpleCursorAdapter(this, 
 				R.layout.menu_list_item, 
 				null, 
 				fromColumns, 
 				toFields, 
-				0));
+				0) {
+			
+			@Override
+			public void bindView(View view, Context context, Cursor cursor) {
+				super.bindView(view, context, cursor);
+				
+				NumberPicker productCount = (NumberPicker)view.findViewById(R.id.count);
+				productCount.setMinValue(0);
+				productCount.setMaxValue(10);
+				
+				// using arraylist to access the numberpickers. maybe bad idea?
+				if (!numberPickers.contains(productCount)) {
+					numberPickers.add(productCount);
+				}
+			}
+			
+		});
 		
 		getLoaderManager().initLoader(0, null, this);
 	}
@@ -85,10 +112,24 @@ public class MainActivity extends ActionBarActivity implements LoaderCallbacks<C
 		}
 		if(id == R.id.toCart) {
 			
-			Intent intent = new Intent(this, CartActivity.class);
+			Intent intent = new Intent(this, CartActivity.class);		
+			addExtras(intent);
 			startActivity(intent);
 		}
 		return super.onOptionsItemSelected(item);
 	}
     
+    // add products with > 0 count to extras
+    private void addExtras(Intent intent) {
+    	for (int i = 0; i < numberPickers.size(); i++) {
+    		NumberPicker np = numberPickers.get(i);
+    		if (np.getValue() > 0) {
+    			Cursor c = (Cursor)menu.getItemAtPosition(i);
+    			intent.putExtra(Product._ID, c.getInt(0));
+    			intent.putExtra(Product.COLUMN_NAME_PRODUCT_NAME, c.getString(1));
+    			intent.putExtra(Product.COLUMN_NAME_PRODUCT_PRICE, c.getDouble(2));
+    			intent.putExtra("productCount", np.getValue());
+    		}
+    	}
+    }
 }
