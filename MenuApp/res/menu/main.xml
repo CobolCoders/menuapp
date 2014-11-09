@@ -9,6 +9,10 @@
     
     <item android:id="@+id/toCart"
         android:title="@string/action_tocart"
-        yourapp:showAsAction="ifRoom"/>
+        yourapp:showAsAction="always"/>
+    
+    <item android:id="@+id/toHistory" 
+        yourapp:showAsAction="always"
+        android:title="@string/history"/>
 
 </menu>  
