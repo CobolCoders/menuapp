@@ -125,11 +125,19 @@ public class MainActivity extends ActionBarActivity implements LoaderCallbacks<C
     		NumberPicker np = numberPickers.get(i);
     		if (np.getValue() > 0) {
     			Cursor c = (Cursor)menu.getItemAtPosition(i);
-    			intent.putExtra(Product._ID, c.getInt(0));
-    			intent.putExtra(Product.COLUMN_NAME_PRODUCT_NAME, c.getString(1));
-    			intent.putExtra(Product.COLUMN_NAME_PRODUCT_PRICE, c.getDouble(2));
-    			intent.putExtra("productCount", np.getValue());
+    			intent.putExtra(appendIndex(Product._ID, i), c.getInt(0));
+    			intent.putExtra(appendIndex(Product.COLUMN_NAME_PRODUCT_NAME, i), c.getString(1));
+    			intent.putExtra(appendIndex(Product.COLUMN_NAME_PRODUCT_PRICE, i), c.getDouble(2));
+    			intent.putExtra(appendIndex("productCount", i), np.getValue());
     		}
     	}
+    }
+    
+    private String appendIndex(String key, int index) {
+    	StringBuilder sb = new StringBuilder();
+    	sb.append(key);
+    	sb.append(".");
+    	sb.append(index);
+    	return sb.toString();
     }
 }
