@@ -40,8 +40,9 @@ public class MenuDbHelper extends SQLiteOpenHelper {
 				Order._ID + " integer primary key," + 
 				Order.COLUMN_NAME_TIMESTAMP + " timestamp);" +
 				"create table " + ProductsOfOrder.TABLE_NAME + "(" +
-				"product_id integer," + 
-				"order_id integer," +
+				"ProductsOfOrder.PRODUCT_ID integer," + 
+				"ProductsOfOrder.ORDER_ID integer," +
+				"ProductsOfOrder.AMOUNT integer," +
 				"foreign key product_id references products(_id)," +
 				"foreign key order_id references orders(_id));";*/
 		return "create table " + fi.menuapp.contract.ProductContract.Product.TABLE_NAME + " (" +
