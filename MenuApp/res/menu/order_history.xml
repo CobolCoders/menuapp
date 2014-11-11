@@ -1,23 +1,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:yourapp="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="fi.menuapp.CartActivity" >
+    tools:context="fi.menuapp.OrderHistoryActivity" >
 
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="@string/action_settings" android:visible="true"/>
+        android:title="@string/action_settings"/>
     
-    <item 
-        android:id="@+id/toMenu"
-        android:orderInCategory="100"
+    <item android:id="@+id/toMenu" 
         yourapp:showAsAction="always"
-        android:title="@string/action_tomenu"/>
+        android:title="@string/menu"/>
     
-    <item android:id="@+id/toHistory" 
+    <item android:id="@+id/toCart" 
         yourapp:showAsAction="always"
-        android:title="@string/history"/>
-    
+        android:title="@string/toCart"/>
 
 </menu>

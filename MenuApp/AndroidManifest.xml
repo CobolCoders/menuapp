@@ -31,6 +31,11 @@
             android:name=".contract.MenuProvider"
             android:authorities="fi.menuapp.contract.MenuProvider" >
         </provider>
+
+        <activity
+            android:name=".OrderHistoryActivity"
+            android:label="@string/title_activity_order_history" >
+        </activity>
     </application>
 
 </manifest>

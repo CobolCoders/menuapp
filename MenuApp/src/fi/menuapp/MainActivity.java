@@ -116,6 +116,11 @@ public class MainActivity extends ActionBarActivity implements LoaderCallbacks<C
 			addExtras(intent);
 			startActivity(intent);
 		}
+		if(id == R.id.toHistory) {
+			Intent intent = new Intent(this, OrderHistoryActivity.class);		
+			addExtras(intent);
+			startActivity(intent);
+		}
 		return super.onOptionsItemSelected(item);
 	}
     
