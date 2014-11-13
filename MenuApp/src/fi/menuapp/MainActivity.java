@@ -21,6 +21,8 @@ import fi.menuapp.component.handler.ComponentUtils;
 import fi.menuapp.component.handler.ListViewProcessor;
 import fi.menuapp.contract.ProductContract;
 import fi.menuapp.contract.ProductContract.Product;
+import fi.menuapp.intent.ProductIntent;
+import fi.menuapp.intent.ProductsIntent;
 
 public class MainActivity extends ActionBarActivity implements LoaderCallbacks<Cursor> {
 	
@@ -150,37 +152,30 @@ public class MainActivity extends ActionBarActivity implements LoaderCallbacks<C
     
     // add products with > 0 count to extras
     private void addExtras(final Intent intent) {
+		final ProductsIntent products = new ProductsIntent();
+    	
     	ListViewProcessor extraProcessor = new ListViewProcessor(menu) {
     		@Override
     		protected void handleNumberPicker(NumberPicker np, int index) {
     			super.handleNumberPicker(np, index);
-    			
     			if (np.getValue() > 0) {
         			Cursor c = getCursorByIndex(index);
-        			intent.putExtra(appendIndex(Product._ID, index), c.getInt(0));
-        			intent.putExtra(appendIndex(Product.COLUMN_NAME_PRODUCT_NAME, index), c.getString(1));
-        			intent.putExtra(appendIndex(Product.COLUMN_NAME_PRODUCT_PRICE, index), c.getDouble(2));
-        			intent.putExtra(appendIndex("productCount", index), np.getValue());
+        			ProductIntent productIntent = new ProductIntent();
+        			productIntent.setProductId(c.getInt(0));
+        			productIntent.setProductName(c.getString(1));
+        			productIntent.setProductPrice(c.getDouble(2));
+        			productIntent.setCount(np.getValue());
+        			products.getProducts().add(productIntent);
         		}
+    			intent.putExtra("products", products);
     		}
     	};
     	
     	extraProcessor.loopNumberPickers();
     }
     
-    
 	private Cursor getCursorByIndex(int index) {
 		// perhaps questionable
 		return (Cursor)menu.getItemAtPosition(index);
 	}
-    
-    private String appendIndex(String key, int index) {
-    	StringBuilder sb = new StringBuilder();
-    	sb.append(key);
-    	sb.append(".");
-    	sb.append(index);
-    	return sb.toString();
-    }
-    
-    
 }
