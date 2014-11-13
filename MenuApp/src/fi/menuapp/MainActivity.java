@@ -1,7 +1,6 @@
 package fi.menuapp;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigDecimal;
 
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
@@ -17,6 +16,9 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
+import fi.menuapp.component.handler.ComponentUtils;
+import fi.menuapp.component.handler.ListViewProcessor;
 import fi.menuapp.contract.ProductContract;
 import fi.menuapp.contract.ProductContract.Product;
 
@@ -34,13 +36,13 @@ public class MainActivity extends ActionBarActivity implements LoaderCallbacks<C
 	private SimpleCursorAdapter productAdapter;
 	
 	private ListView menu;
-	private List<NumberPicker> numberPickers;
+	
+	private BigDecimal totalPrice;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        numberPickers = new ArrayList<NumberPicker>();
         createListViewMenu();
     }
 
@@ -62,17 +64,40 @@ public class MainActivity extends ActionBarActivity implements LoaderCallbacks<C
 			@Override
 			public void bindView(View view, Context context, Cursor cursor) {
 				super.bindView(view, context, cursor);
-				
-				NumberPicker productCount = (NumberPicker)view.findViewById(R.id.count);
+				setupNumberPickerForEachRow(view);
+			}
+
+			private void setupNumberPickerForEachRow(View view) {
+				NumberPicker productCount = ComponentUtils.getNumberPricker(view);
 				productCount.setMinValue(0);
 				productCount.setMaxValue(10);
-				
-				// using arraylist to access the numberpickers. maybe bad idea?
-				if (!numberPickers.contains(productCount)) {
-					numberPickers.add(productCount);
-				}
+				productCount.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+					@Override
+					public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+						// change total price
+						totalPrice = BigDecimal.ZERO;
+						
+						ListViewProcessor totalPriceProcessor = new ListViewProcessor(menu) {
+							@Override
+							protected void handleNumberPicker(NumberPicker np, int index) {
+								super.handleNumberPicker(np, index);
+								Cursor c = getCursorByIndex(index);
+								BigDecimal priceOfItem = new BigDecimal(c.getDouble(2));
+								BigDecimal totalPriceForItem = priceOfItem.multiply(new BigDecimal(np.getValue()));
+								totalPrice = totalPrice.add(totalPriceForItem);
+							}
+						};
+						
+						totalPriceProcessor.loopNumberPickers();
+						
+						TextView totalPriceText = (TextView)findViewById(R.id.totalPriceText);
+						StringBuilder sb = new StringBuilder();
+						sb.append("Total price: ");
+						sb.append(totalPrice.toString());
+						totalPriceText.setText(sb.toString());
+					}
+				});
 			}
-			
 		});
 		
 		getLoaderManager().initLoader(0, null, this);
@@ -92,7 +117,6 @@ public class MainActivity extends ActionBarActivity implements LoaderCallbacks<C
 	public void onLoaderReset(Loader<Cursor> loader) {
 		productAdapter.swapCursor(null);
 	}	
-    
 
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -125,18 +149,30 @@ public class MainActivity extends ActionBarActivity implements LoaderCallbacks<C
 	}
     
     // add products with > 0 count to extras
-    private void addExtras(Intent intent) {
-    	for (int i = 0; i < numberPickers.size(); i++) {
-    		NumberPicker np = numberPickers.get(i);
-    		if (np.getValue() > 0) {
-    			Cursor c = (Cursor)menu.getItemAtPosition(i);
-    			intent.putExtra(appendIndex(Product._ID, i), c.getInt(0));
-    			intent.putExtra(appendIndex(Product.COLUMN_NAME_PRODUCT_NAME, i), c.getString(1));
-    			intent.putExtra(appendIndex(Product.COLUMN_NAME_PRODUCT_PRICE, i), c.getDouble(2));
-    			intent.putExtra(appendIndex("productCount", i), np.getValue());
+    private void addExtras(final Intent intent) {
+    	ListViewProcessor extraProcessor = new ListViewProcessor(menu) {
+    		@Override
+    		protected void handleNumberPicker(NumberPicker np, int index) {
+    			super.handleNumberPicker(np, index);
+    			
+    			if (np.getValue() > 0) {
+        			Cursor c = getCursorByIndex(index);
+        			intent.putExtra(appendIndex(Product._ID, index), c.getInt(0));
+        			intent.putExtra(appendIndex(Product.COLUMN_NAME_PRODUCT_NAME, index), c.getString(1));
+        			intent.putExtra(appendIndex(Product.COLUMN_NAME_PRODUCT_PRICE, index), c.getDouble(2));
+        			intent.putExtra(appendIndex("productCount", index), np.getValue());
+        		}
     		}
-    	}
+    	};
+    	
+    	extraProcessor.loopNumberPickers();
     }
+    
+    
+	private Cursor getCursorByIndex(int index) {
+		// perhaps questionable
+		return (Cursor)menu.getItemAtPosition(index);
+	}
     
     private String appendIndex(String key, int index) {
     	StringBuilder sb = new StringBuilder();
@@ -145,4 +181,6 @@ public class MainActivity extends ActionBarActivity implements LoaderCallbacks<C
     	sb.append(index);
     	return sb.toString();
     }
+    
+    
 }
