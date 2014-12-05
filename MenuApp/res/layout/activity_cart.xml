@@ -9,20 +9,20 @@
     tools:context="fi.menuapp.CartActivity" >
     
     <ListView
-        android:id="@+id/listViewMenu"
+        android:id="@+id/listViewCart"
         android:layout_width="wrap_content"
         android:layout_height="400dp" >
 
     </ListView>
 
     <TextView
-        android:id="@+id/totalPriceText"
+        android:id="@+id/totalPriceTextCart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/listViewMenu"
+        android:layout_alignLeft="@+id/listViewCart"
         android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/listViewMenu"
-        android:layout_below="@+id/listViewMenu"
+        android:layout_alignRight="@+id/listViewCart"
+        android:layout_below="@+id/listViewCart"
         android:text="@string/totalPriceDefaultText"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 

@@ -1,12 +1,15 @@
 package fi.menuapp;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 import fi.menuapp.intent.ProductIntent;
 import fi.menuapp.intent.ProductsIntent;
 
@@ -18,19 +21,19 @@ public class CartActivity extends ActionBarActivity {
 		setContentView(R.layout.activity_cart);
 		Intent intent = getIntent();
 		ProductsIntent products = (ProductsIntent)intent.getExtras().get("products");
+		ListView listView1 = (ListView)findViewById(R.id.listViewCart);
+		List<ProductIntent> productList = products.getProducts();
+		double totalSum = 0;
 		
-		// Create an adapter??
-		// Attach to ListView?
-		// double totalSum;
-		
-		for(int i = 0; i < products.getProducts().size(); i++) {
-			// ProductIntent product = products(index[i]);
-			// ListView name = product.getName();
-			// ListView count = product.getCount();
-			// ListView price = product.getCount();
-			// totalSum = totalSum + parseInt(product.getCount()) * parseDouble(product.getDouble());
+		for(int i = 0; i < productList.size(); i++) {
+			ProductIntent product = productList.get(i);
+			totalSum = totalSum + (product.getCount() * product.getProductPrice());
 		}
-		
+		ArrayAdapter<ProductIntent> adapter = new ArrayAdapter<ProductIntent>(this, android.R.layout.simple_list_item_1, productList);
+		listView1.setAdapter(adapter);
+		TextView totalPriceText = (TextView)findViewById(R.id.totalPriceTextCart);
+		String total = String.valueOf(totalSum);
+		totalPriceText.setText(total);
 		// Update totalSum;
 		
 	}

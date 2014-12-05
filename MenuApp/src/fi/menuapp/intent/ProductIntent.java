@@ -35,4 +35,8 @@ public class ProductIntent implements Serializable {
 	public void setCount(int count) {
 		this.count = count;
 	}
+	
+	public String toString() {
+		return productId + ". " + productName + " " + productPrice + " x " + count;
+	}
 }
