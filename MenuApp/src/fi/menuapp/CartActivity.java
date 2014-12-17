@@ -32,8 +32,8 @@ public class CartActivity extends ActionBarActivity {
 		ArrayAdapter<ProductIntent> adapter = new ArrayAdapter<ProductIntent>(this, android.R.layout.simple_list_item_1, productList);
 		listView1.setAdapter(adapter);
 		TextView totalPriceText = (TextView)findViewById(R.id.totalPriceTextCart);
-		String total = String.valueOf(totalSum);
-		totalPriceText.setText(total);
+		String total = String.valueOf(totalSum).substring(0, 5);
+		totalPriceText.setText("Total price: " + total + "€");
 		// Update totalSum;
 		
 	}

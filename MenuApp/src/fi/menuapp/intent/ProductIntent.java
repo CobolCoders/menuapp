@@ -37,6 +37,6 @@ public class ProductIntent implements Serializable {
 	}
 	
 	public String toString() {
-		return productId + ". " + productName + " " + productPrice + " x " + count;
+		return productId + ". " + productName + "\r\n" + productPrice + "€ x " + count;
 	}
 }

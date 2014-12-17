@@ -95,7 +95,8 @@ public class MainActivity extends ActionBarActivity implements LoaderCallbacks<C
 						TextView totalPriceText = (TextView)findViewById(R.id.totalPriceText);
 						StringBuilder sb = new StringBuilder();
 						sb.append("Total price: ");
-						sb.append(totalPrice.toString());
+						sb.append(totalPrice.toString().substring(0, 5));
+						sb.append("€");
 						totalPriceText.setText(sb.toString());
 					}
 				});

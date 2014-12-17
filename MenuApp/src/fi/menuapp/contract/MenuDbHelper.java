@@ -63,5 +63,11 @@ public class MenuDbHelper extends SQLiteOpenHelper {
 				+ " values(100, 'Koko illan oluet', '49.10');");
 		db.execSQL("insert into " + fi.menuapp.contract.ProductContract.Product.TABLE_NAME 
 				+ " values(101, 'Karhun jänteitä jäillä', '29.10');");
+		db.execSQL("insert into " + fi.menuapp.contract.ProductContract.Product.TABLE_NAME 
+				+ " values(102, 'Grillattu Villisika', '37.35');");
+		db.execSQL("insert into " + fi.menuapp.contract.ProductContract.Product.TABLE_NAME 
+				+ " values(103, 'MArianturaa ja uppomuna', '55.29');");
+		db.execSQL("insert into " + fi.menuapp.contract.ProductContract.Product.TABLE_NAME 
+				+ " values(104, 'Friteerattu banaani ja vaniljajäätelöä', '5');");
 	}
 }
